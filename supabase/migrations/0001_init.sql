@@ -249,6 +249,13 @@ create policy "members manage onepagers" on public.onepagers
 do $$
 declare t text;
 begin
+  -- Supabase always ships this publication; guard anyway so the file can be
+  -- run against a plain Postgres without aborting the rest of the script.
+  if not exists (select 1 from pg_publication where pubname = 'supabase_realtime') then
+    raise notice 'supabase_realtime publication not found — skipping realtime setup';
+    return;
+  end if;
+
   foreach t in array array['question_suggestions', 'field_coverage', 'transcript_segments'] loop
     if not exists (
       select 1 from pg_publication_tables

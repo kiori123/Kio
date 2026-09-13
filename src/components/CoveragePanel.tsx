@@ -31,7 +31,7 @@ export function CoveragePanel({ coverage }: { coverage: Map<string, FieldCoverag
   const pct = completeness(coverage);
 
   return (
-    <div className="card flex h-full flex-col overflow-hidden">
+    <div className="card flex max-h-[70vh] flex-col overflow-hidden lg:h-full lg:max-h-none">
       <div className="border-b border-edge p-4">
         <div className="flex items-baseline justify-between">
           <span className="text-xs font-semibold uppercase tracking-wide text-muted">

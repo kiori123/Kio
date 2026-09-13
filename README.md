@@ -79,16 +79,19 @@ what make the host sound like they are listening rather than reading.
 
 ### 1. Supabase
 
-Create a project, then run the migrations in order:
+**From a phone, or in a hurry:** open `supabase/setup.sql`, copy the whole
+file, and paste it into the Supabase dashboard → SQL Editor → Run. That is the
+entire database step, in one paste. It is safe to run more than once.
+
+**With the CLI:**
 
 ```bash
 supabase link --project-ref YOUR-REF
 supabase db push
 ```
 
-Or paste `supabase/migrations/0001_init.sql` then
-`supabase/migrations/0002_question_bank_template.sql` into the SQL editor. Both
-files are re-runnable.
+`setup.sql` is just migrations 0001 and 0002 concatenated in order — use the CLI
+path if you want real migration history, the single file if you want to be done.
 
 This creates the schema, row-level security, the realtime publication, and the
 54-question mother set. A trigger on `auth.users` gives every new user a
@@ -179,8 +182,11 @@ The default is the browser's own recognition (`src/hooks/useTranscription.ts`).
 It needs no key and no audio infrastructure, which makes it the right choice for
 getting the product in front of someone this week. It has two real limits:
 
-1. **Chrome and Edge only.** Safari and Firefox fall back to typing, which still
-   works — the whole pipeline runs off text.
+1. **Chrome and Edge only — and that means no iPhone.** Every iOS browser is
+   Safari underneath, so speech recognition is unavailable there regardless of
+   which browser is installed. Android Chrome works. On iOS the typing fallback
+   still works, and so does everything downstream, because the pipeline runs off
+   text rather than audio.
 2. **Chrome streams the audio to Google.** For a meeting under NDA that may not
    be acceptable, and it is worth deciding before the first client meeting
    rather than after.

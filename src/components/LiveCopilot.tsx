@@ -194,8 +194,8 @@ export function LiveCopilot({
   const [hero, ...onDeck] = pending;
 
   return (
-    <div className="grid h-screen grid-rows-[auto_1fr] bg-ink">
-      <header className="flex items-center justify-between border-b border-edge px-6 py-3">
+    <div className="grid min-h-screen grid-rows-[auto_1fr] bg-ink lg:h-screen">
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-edge px-4 py-3 sm:px-6">
         <div>
           <h1 className="text-base font-semibold">{meeting.brand_name}</h1>
           <p className="text-xs text-muted">{meeting.title ?? "Live meeting"}</p>
@@ -215,9 +215,9 @@ export function LiveCopilot({
         </div>
       </header>
 
-      <div className="grid grid-cols-1 gap-4 overflow-hidden p-4 lg:grid-cols-[1.4fr_1fr_0.9fr]">
+      <div className="grid grid-cols-1 gap-4 p-4 lg:grid-cols-[1.4fr_1fr_0.9fr] lg:overflow-hidden">
         {/* Ask next */}
-        <section className="flex flex-col gap-3 overflow-y-auto">
+        <section className="flex flex-col gap-3 lg:overflow-y-auto">
           <h2 className="text-xs font-semibold uppercase tracking-wide text-muted">Ask next</h2>
 
           {steer && (
@@ -242,12 +242,12 @@ export function LiveCopilot({
         </section>
 
         {/* Transcript + input */}
-        <section className="flex flex-col overflow-hidden">
+        <section className="flex flex-col lg:overflow-hidden">
           <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">
             Transcript
           </h2>
 
-          <div className="card flex-1 overflow-y-auto p-3 text-xs leading-relaxed">
+          <div className="card max-h-60 flex-1 overflow-y-auto p-3 text-xs leading-relaxed lg:max-h-none">
             {segments.slice(-40).map((s) => (
               <p key={s.id} className="mb-2">
                 <span
@@ -301,7 +301,7 @@ export function LiveCopilot({
         </section>
 
         {/* Coverage */}
-        <section className="overflow-hidden">
+        <section className="lg:overflow-hidden">
           <CoveragePanel coverage={coverage} />
         </section>
       </div>
