@@ -31,6 +31,72 @@
     }
   });
 
+  // ---- Giỏ dữ liệu: gom nhiều lần crawl (vd nhiều trang phân trang) thành 1 file ----
+  const BASKET_KEY = 'cvcd_basket_rows';
+  let basketBarEl = null;
+
+  function getBasketRows() {
+    return new Promise((resolve) => {
+      chrome.storage.local.get([BASKET_KEY], (res) => resolve(res[BASKET_KEY] || []));
+    });
+  }
+
+  function setBasketRows(rows) {
+    return new Promise((resolve) => {
+      chrome.storage.local.set({ [BASKET_KEY]: rows }, resolve);
+    });
+  }
+
+  function addRowsToBasket(newRows) {
+    return getBasketRows().then((rows) => setBasketRows(rows.concat(newRows)));
+  }
+
+  function clearBasket() {
+    return setBasketRows([]);
+  }
+
+  function renderBasketBar() {
+    getBasketRows().then((rows) => {
+      if (rows.length === 0) {
+        if (basketBarEl) {
+          basketBarEl.remove();
+          basketBarEl = null;
+        }
+        return;
+      }
+      if (!basketBarEl) {
+        basketBarEl = document.createElement('div');
+        basketBarEl.className = 'cvcd-basket-bar';
+        document.body.appendChild(basketBarEl);
+      }
+      basketBarEl.innerHTML = `
+        🧺 Giỏ: <b>${rows.length}</b> dòng
+        <button id="cvcd-basket-download">Tải CSV</button>
+        <button id="cvcd-basket-copy">Copy CSV</button>
+        <button class="cvcd-secondary" id="cvcd-basket-clear">Xoá giỏ</button>
+      `;
+      basketBarEl.querySelector('#cvcd-basket-download').addEventListener('click', () => {
+        getBasketRows().then((all) => {
+          downloadFile('﻿' + toCSV(all), 'crawl-data-gop.csv', 'text/csv;charset=utf-8;');
+        });
+      });
+      basketBarEl.querySelector('#cvcd-basket-copy').addEventListener('click', () => {
+        getBasketRows().then((all) => {
+          copyToClipboard(toCSV(all), 'Đã copy CSV giỏ vào clipboard!');
+        });
+      });
+      basketBarEl.querySelector('#cvcd-basket-clear').addEventListener('click', () => {
+        clearBasket().then(renderBasketBar);
+      });
+    });
+  }
+
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'local' && changes[BASKET_KEY]) renderBasketBar();
+  });
+
+  renderBasketBar();
+
   function startPicking() {
     state.picking = true;
     ensureHoverOverlay();
@@ -294,6 +360,9 @@
         <button id="cvcd-copy-json">Copy JSON</button>
         <button id="cvcd-download-csv">Tải CSV</button>
       </div>
+      <div class="cvcd-actions">
+        <button id="cvcd-add-basket" title="Gom vùng đã chọn vào giỏ, để sau khi lặp lại ở các trang khác thì tải/copy chung 1 lần.">➕ Thêm vào giỏ (crawl nhiều trang)</button>
+      </div>
       <div class="cvcd-status" id="cvcd-status"></div>
     `;
     document.body.appendChild(panelEl);
@@ -319,6 +388,13 @@
       const data = extractRange();
       // Thêm BOM để Excel (đặc biệt bản Windows) nhận đúng UTF-8, không bị vỡ dấu tiếng Việt.
       downloadFile('﻿' + toCSV(data), 'crawl-data.csv', 'text/csv;charset=utf-8;');
+    });
+    panelEl.querySelector('#cvcd-add-basket').addEventListener('click', () => {
+      const data = extractRange();
+      addRowsToBasket(data).then(() => {
+        setStatus(`Đã thêm ${data.length} dòng vào giỏ.`);
+        renderBasketBar();
+      });
     });
 
     renderPreview();

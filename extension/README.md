@@ -38,6 +38,23 @@ crawl đúng phần dữ liệu cần lấy, rồi copy/tải ra CSV hoặc JSON
    - **Chọn lại vùng**: quay lại bước chọn khu vực khác.
 5. Nhấn **ESC** bất cứ lúc nào trong lúc đang ở chế độ chọn để hủy.
 
+## Crawl nhiều trang (phân trang) rồi gộp thành 1 file
+
+Ví dụ: bảng 3 cột, mỗi trang 10 dòng, có 5 trang muốn lấy hết.
+
+1. Ở **trang 1**: chọn vùng như bình thường, chỉnh Cột/Hàng từ–đến bao gồm luôn **hàng
+   tiêu đề** (nếu có) → bấm **➕ Thêm vào giỏ (crawl nhiều trang)**.
+2. Chuyển sang **trang 2**: bấm icon extension → chọn lại vùng → lần này chỉnh **Hàng từ**
+   bắt đầu từ hàng dữ liệu đầu tiên (bỏ qua hàng tiêu đề, vì đã có ở trang 1 rồi) → bấm
+   **➕ Thêm vào giỏ**.
+3. Lặp lại bước 2 cho **trang 3, 4, 5**.
+4. Một thanh nhỏ **"🧺 Giỏ: N dòng"** luôn hiện ở góc dưới-trái màn hình, cộng dồn số dòng
+   qua từng lần thêm — kể cả khi bạn chuyển trang/tải lại trang, giỏ vẫn còn nguyên (lưu ở
+   `chrome.storage.local`, không phụ thuộc tab hay lần tải trang).
+5. Xong cả 5 trang: bấm **Tải CSV** hoặc **Copy CSV** ngay trên thanh giỏ để lấy ra 1 file
+   duy nhất gồm toàn bộ dữ liệu đã gom (1 header + 50 dòng dữ liệu ví dụ trên).
+6. Bấm **Xoá giỏ** khi muốn làm mới, bắt đầu 1 lượt gom khác.
+
 ## Giới hạn hiện tại
 
 - Không tự gộp `colspan`/`rowspan` — mỗi ô được đếm là 1 cột dựa theo số phần tử ô thực tế.
