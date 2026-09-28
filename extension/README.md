@@ -24,6 +24,11 @@ crawl đúng phần dữ liệu cần lấy, rồi copy/tải ra CSV hoặc JSON
    - Hiện số thứ tự cột (C1, C2, …) phía trên hàng đầu, số thứ tự hàng (H1, H2, …) bên
      trái mỗi hàng, để bạn biết chính xác cần chọn từ đâu đến đâu.
 4. Panel điều khiển hiện ở góc phải màn hình:
+   - Nếu số hàng/cột phát hiện được không đúng với bảng bạn thấy trên màn hình (thường
+     do bấm trúng ngay 1 ô lẻ trong layout dạng div), bấm **⬆ Mở rộng vùng** để leo lên
+     khu vực cha (vd từ "1 hàng" lên "cả lưới"), hoặc **⬇ Thu hẹp vùng** để quay lại vùng
+     nhỏ hơn trước đó. Theo dõi số "Phát hiện: N hàng × M cột" và các badge C1/H1 để biết
+     khi nào đã đúng.
    - Nhập **Cột từ / Cột đến**, **Hàng từ / Hàng đến**.
    - Bấm **Xem trước** để xem bảng preview đúng phần đã chọn.
    - Tick **"Dùng hàng đầu tiên làm tiêu đề cột"** nếu muốn xuất JSON dạng

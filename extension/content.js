@@ -18,6 +18,7 @@
   let panelEl = null;
   let badgeEls = [];
   let repositionHandlerAttached = false;
+  let regionHistory = []; // stack of ancestor elements, for "shrink" after "expand"
 
   chrome.runtime.onMessage.addListener((msg) => {
     if (msg && msg.type === 'TOGGLE_PICKER') {
@@ -69,8 +70,23 @@
     e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
-    state.regionEl = e.target;
+    regionHistory = [];
+    // Click thường rơi vào phần tử lá (vd 1 ô/cell), leo lên tổ tiên gần nhất
+    // có phần tử con để có cơ hội bắt đúng "hàng" thay vì 1 ô lẻ.
+    state.regionEl = climbToNearestContainer(e.target);
     stopPicking();
+    selectRegionAndShowPanel();
+  }
+
+  function climbToNearestContainer(el) {
+    let cur = el;
+    while (cur && cur.children.length === 0 && cur.parentElement) {
+      cur = cur.parentElement;
+    }
+    return cur;
+  }
+
+  function selectRegionAndShowPanel() {
     analyzeRegion();
     if (state.numRows === 0) {
       showHint('Không tìm thấy dữ liệu dạng bảng/lưới trong khu vực đã chọn. Thử bấm vào phần tử khác.');
@@ -79,6 +95,20 @@
     }
     buildPanel();
     renderBadges();
+  }
+
+  function expandRegion() {
+    const next = state.regionEl && state.regionEl.parentElement;
+    if (!next || next === document.documentElement) return;
+    regionHistory.push(state.regionEl);
+    state.regionEl = next;
+    selectRegionAndShowPanel();
+  }
+
+  function shrinkRegion() {
+    if (regionHistory.length === 0) return;
+    state.regionEl = regionHistory.pop();
+    selectRegionAndShowPanel();
   }
 
   function analyzeRegion() {
@@ -226,6 +256,10 @@
       <button class="cvcd-close" title="Đóng">✕</button>
       <h3>Crawl dữ liệu vùng đã chọn</h3>
       <div class="cvcd-meta">Phát hiện: <b>${state.numRows}</b> hàng × <b>${state.numCols}</b> cột</div>
+      <div class="cvcd-actions">
+        <button class="cvcd-secondary" id="cvcd-expand" title="Vùng đang chọn quá nhỏ (thiếu hàng/cột)? Leo lên khu vực cha.">⬆ Mở rộng vùng</button>
+        <button class="cvcd-secondary" id="cvcd-shrink" title="Quay lại vùng nhỏ hơn trước đó.">⬇ Thu hẹp vùng</button>
+      </div>
       <div class="cvcd-row">
         <div class="cvcd-field">
           <label>Cột từ</label>
@@ -269,6 +303,8 @@
       closePanel();
       startPicking();
     });
+    panelEl.querySelector('#cvcd-expand').addEventListener('click', expandRegion);
+    panelEl.querySelector('#cvcd-shrink').addEventListener('click', shrinkRegion);
     panelEl.querySelector('#cvcd-preview').addEventListener('click', renderPreview);
     panelEl.querySelector('#cvcd-copy-csv').addEventListener('click', () => {
       const data = extractRange();
