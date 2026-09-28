@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Khoanh Vùng Crawl Dữ Liệu",
+  "version": "1.0.0",
+  "description": "Chọn 1 khu vực (bảng/lưới) trên trang, chỉ định cột từ-đến và hàng từ-đến rồi crawl dữ liệu ra CSV/JSON.",
+  "permissions": ["activeTab", "scripting", "clipboardWrite"],
+  "action": {
+    "default_title": "Bật/tắt chế độ chọn vùng dữ liệu"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ]
+}

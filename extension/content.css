@@ -1,0 +1,193 @@
+.cvcd-hover-overlay {
+  position: fixed;
+  pointer-events: none;
+  z-index: 2147483646;
+  border: 2px solid #2f7bf6;
+  background: rgba(47, 123, 246, 0.12);
+  border-radius: 4px;
+  transition: all 0.05s linear;
+  box-sizing: border-box;
+}
+
+.cvcd-region-overlay {
+  position: fixed;
+  pointer-events: none;
+  z-index: 2147483645;
+  border: 2px solid #16a34a;
+  background: rgba(22, 163, 74, 0.08);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.cvcd-hint {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111827;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  z-index: 2147483647;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.cvcd-badge {
+  position: fixed;
+  z-index: 2147483646;
+  background: #2f7bf6;
+  color: #fff;
+  font: 11px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 2px 6px;
+  border-radius: 10px;
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.cvcd-badge.cvcd-row-badge {
+  background: #16a34a;
+}
+
+.cvcd-panel {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 340px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: #ffffff;
+  color: #111827;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  z-index: 2147483647;
+  font: 13px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+.cvcd-panel h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.cvcd-panel .cvcd-meta {
+  margin-bottom: 10px;
+  color: #4b5563;
+  font-size: 12px;
+}
+
+.cvcd-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.cvcd-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cvcd-field label {
+  font-size: 11px;
+  color: #4b5563;
+}
+
+.cvcd-field input,
+.cvcd-field select {
+  padding: 5px 6px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 13px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cvcd-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0 10px;
+  font-size: 12px;
+  color: #374151;
+}
+
+.cvcd-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.cvcd-actions button {
+  flex: 1;
+  min-width: 70px;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 6px;
+  background: #2f7bf6;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cvcd-actions button.cvcd-secondary {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.cvcd-actions button:hover {
+  filter: brightness(1.05);
+}
+
+.cvcd-preview {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: auto;
+  max-height: 220px;
+}
+
+.cvcd-preview table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 11px;
+}
+
+.cvcd-preview td, .cvcd-preview th {
+  border: 1px solid #e5e7eb;
+  padding: 4px 6px;
+  white-space: nowrap;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cvcd-preview th {
+  background: #f3f4f6;
+  position: sticky;
+  top: 0;
+}
+
+.cvcd-status {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #16a34a;
+  min-height: 16px;
+}
+
+.cvcd-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  color: #6b7280;
+  line-height: 1;
+}
