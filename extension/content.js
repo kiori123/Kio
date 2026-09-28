@@ -317,7 +317,8 @@
     });
     panelEl.querySelector('#cvcd-download-csv').addEventListener('click', () => {
       const data = extractRange();
-      downloadFile(toCSV(data), 'crawl-data.csv', 'text/csv;charset=utf-8;');
+      // Thêm BOM để Excel (đặc biệt bản Windows) nhận đúng UTF-8, không bị vỡ dấu tiếng Việt.
+      downloadFile('﻿' + toCSV(data), 'crawl-data.csv', 'text/csv;charset=utf-8;');
     });
 
     renderPreview();
